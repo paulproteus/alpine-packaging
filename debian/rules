@@ -43,8 +43,10 @@ dfsg_version = $(upstream_version)+dfsg1
 pkg = alpine
 
 get-orig-source:
-	uscan --noconf --force-download --rename --repack --download-current-version --destdir=.
-	tar -xf $(pkg)_$(upstream_version).orig.tar.gz
+	uscan --noconf --force-download --rename --download-current-version --destdir=.
+	# Check sha256sum against known good hash
+	sha256sum $(pkg)_$(upstream_version).orig.tar.xz | grep fecc9ca5df03e0f368edec65cd61444325157b5635b5c92380cedf9c4ce8fbf6
+	tar -xf $(pkg)_$(upstream_version).orig.tar.xz
 	mv $(pkg)-$(upstream_version) $(pkg)-$(dfsg_version)
 	## No obvious source code, not needed to build.
 	cd $(pkg)-$(dfsg_version) ; rm -rf ldap/binaries/
